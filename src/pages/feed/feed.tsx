@@ -10,25 +10,24 @@ import {
 } from '../../services/slices/feedSlice';
 import {
   getIngredientsAsync,
-  getIngredientsInit
+  getIngredientsIsLoading
 } from '../../services/slices/constructorSlice';
 
 export const Feed: FC = () => {
   const orders: TOrder[] = useSelector(getFeedOrders);
   const feedIsLoading = useSelector(getFeedIsLoading);
+  const ingredientsIsLoading = useSelector(getIngredientsIsLoading);
   const dispatch = useDispatch();
-  const ingredientsInit = useSelector(getIngredientsInit);
 
   useEffect(() => {
-    dispatch(getFeedAsync());
-    if (!ingredientsInit) dispatch(getIngredientsAsync());
+    Promise.all([dispatch(getIngredientsAsync()), dispatch(getFeedAsync())]);
   }, []);
 
   function handleGetFeed() {
-    dispatch(getFeedAsync());
+    Promise.all([dispatch(getIngredientsAsync()), dispatch(getFeedAsync())]);
   }
 
-  return feedIsLoading ? (
+  return feedIsLoading || ingredientsIsLoading ? (
     <Preloader />
   ) : (
     <FeedUI orders={orders} handleGetFeeds={handleGetFeed} />

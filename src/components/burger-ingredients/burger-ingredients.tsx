@@ -3,12 +3,13 @@ import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '@ui';
-import { useSelector } from 'react-redux';
+
 import {
   getIngredientsBun,
   getIngredientsMain,
   getIngredientsSauce
 } from '../../services/slices/constructorSlice';
+import { useSelector } from '../../services/store';
 
 export const BurgerIngredients: FC = () => {
   const buns = useSelector(getIngredientsBun);

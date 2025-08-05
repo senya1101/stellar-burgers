@@ -8,19 +8,19 @@ export interface ConstructorItems {
   ingredients: TConstructorIngredient[];
 }
 
-export interface IngredientsState {
-  ingredientsInit: boolean;
+export interface ConstructorState {
   ingredientsBun: TIngredient[];
   ingredientsMain: TIngredient[];
   ingredientsSauce: TIngredient[];
+  ingredients: TIngredient[];
   ingredientsIsLoading: boolean;
   constructorItems: ConstructorItems;
   orderRequest: boolean;
   modalOrderData: TOrder | null;
 }
 
-const initialState: IngredientsState = {
-  ingredientsInit: false,
+const initialState: ConstructorState = {
+  ingredients: [],
   modalOrderData: null,
   orderRequest: false,
   constructorItems: {
@@ -33,7 +33,7 @@ const initialState: IngredientsState = {
   ingredientsIsLoading: false
 };
 export const constructorSlice = createSlice({
-  name: 'ingredients',
+  name: 'burgerConstructor',
   initialState,
   reducers: {
     addIngredient: (state, action) => {
@@ -83,9 +83,7 @@ export const constructorSlice = createSlice({
     getConstructorItems: (state) => state.constructorItems,
     getOrderRequest: (state) => state.orderRequest,
     getOrderModalData: (state) => state.modalOrderData,
-    getIngredientsInit: (state) => state.ingredientsInit,
-    getIngredients: (state) =>
-      state.ingredientsSauce.concat(state.ingredientsBun, state.ingredientsMain)
+    getIngredients: (state) => state.ingredients
   },
   extraReducers: (builder) =>
     builder
@@ -100,7 +98,7 @@ export const constructorSlice = createSlice({
         state.ingredientsBun = payload.filter((x) => x.type === 'bun');
         state.ingredientsSauce = payload.filter((x) => x.type === 'sauce');
         state.ingredientsMain = payload.filter((x) => x.type === 'main');
-        state.ingredientsInit = true;
+        state.ingredients = payload;
       })
       .addCase(orderAsync.pending, (state) => {
         state.orderRequest = true;
@@ -120,7 +118,7 @@ export const constructorSlice = createSlice({
 
 export const getIngredientsAsync = createAsyncThunk(
   'ingredients/getIngredients',
-  async () => await getIngredientsApi()
+  getIngredientsApi
 );
 
 export const orderAsync = createAsyncThunk('order', async (data: string[]) => {
@@ -136,7 +134,6 @@ export const {
   getConstructorItems,
   getOrderRequest,
   getOrderModalData,
-  getIngredientsInit,
   getIngredients
 } = constructorSlice.selectors;
 

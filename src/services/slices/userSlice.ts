@@ -14,44 +14,70 @@ export interface UserState {
   user: TUser | null;
   isLoading: boolean;
   orders: TOrder[];
+  error: string;
+  ordersIsLoading: boolean;
 }
 
 const initialState: UserState = {
   user: null,
   isLoading: false,
-  orders: []
+  orders: [],
+  error: '',
+  ordersIsLoading: false
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setErrorUser: (state, action) => {
+      if (typeof action.payload === 'string') state.error = action.payload;
+    },
+    clearUserOrders: (state) => {
+      state.orders = [];
+    }
+  },
   selectors: {
     getUser: (state) => state.user,
     getUserIsLoading: (state) => state.isLoading,
-    getUsersOrders: (state) => state.orders
+    getUsersOrders: (state) => state.orders,
+    getErrorUser: (state) => state.error,
+    getOrdersIsLoading: (state) => state.ordersIsLoading
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
+        state.error = '';
       })
-      .addCase(loginUser.rejected, (state) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error.message || '';
       })
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.user = payload;
+        state.error = '';
+        if (payload && payload.success) {
+          state.user = payload.user;
+          setCookie('accessToken', payload.accessToken);
+          localStorage.setItem('refreshToken', payload.refreshToken);
+        }
       })
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(registerUser.rejected, (state) => {
+      .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error.message!;
       })
       .addCase(registerUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.user = payload;
+        state.error = '';
+        if (payload && payload.success) {
+          setCookie('accessToken', payload.accessToken);
+          localStorage.setItem('refreshToken', payload.refreshToken);
+          state.user = payload.user;
+        }
       })
       .addCase(updateUser.pending, (state) => {
         state.isLoading = true;
@@ -61,7 +87,10 @@ export const userSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.user = payload;
+        state.error = '';
+        if (payload && payload.success) {
+          state.user = payload.user;
+        }
       })
       .addCase(logoutUser.pending, (state) => {
         state.isLoading = true;
@@ -71,59 +100,55 @@ export const userSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.user = null;
+        if (payload) {
+          state.user = null;
+          state.orders = [];
+          deleteCookie('accessToken');
+        }
       })
       .addCase(getUsersOrdersAsync.pending, (state) => {
-        state.isLoading = true;
+        state.ordersIsLoading = true;
       })
       .addCase(getUsersOrdersAsync.rejected, (state) => {
-        state.isLoading = false;
+        state.ordersIsLoading = false;
       })
       .addCase(getUsersOrdersAsync.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
         state.orders = payload;
+        state.ordersIsLoading = false;
       });
   }
 });
 
 export const loginUser = createAsyncThunk(
   'user/login',
-  async ({ email, password }: { email: string; password: string }) => {
-    const res = await loginUserApi({ email, password });
-    setCookie('accessToken', res.accessToken);
-    localStorage.setItem('refreshToken', res.refreshToken);
-    return res.user;
-  }
+  async ({ email, password }: { email: string; password: string }) =>
+    await loginUserApi({ email, password })
 );
 
 export const registerUser = createAsyncThunk(
   'user/register',
-  async ({ email, name, password }: TRegisterData) => {
-    const res = await registerUserApi({ email, name, password });
-    setCookie('accessToken', res.accessToken);
-    localStorage.setItem('refreshToken', res.refreshToken);
-    return res.user;
-  }
+  async ({ email, name, password }: TRegisterData) =>
+    await registerUserApi({ email, name, password })
 );
 
 export const updateUser = createAsyncThunk(
   'user/update',
-  async (user: Partial<TRegisterData>) => {
-    const res = await updateUserApi(user);
-    return res.user;
-  }
+  async (user: Partial<TRegisterData>) => await updateUserApi(user)
 );
 
-export const logoutUser = createAsyncThunk('user/logout', async () => {
-  const { success } = await logoutApi();
-  if (success) deleteCookie('accessToken');
-  return success;
-});
+export const logoutUser = createAsyncThunk('user/logout', logoutApi);
 
 export const getUsersOrdersAsync = createAsyncThunk(
   'user/orders',
-  async () => await getOrdersApi()
+  getOrdersApi
 );
 
-export const { getUsersOrders, getUser, getUserIsLoading } =
-  userSlice.selectors;
+export const {
+  getUsersOrders,
+  getUser,
+  getUserIsLoading,
+  getErrorUser,
+  getOrdersIsLoading
+} = userSlice.selectors;
+
+export const { setErrorUser, clearUserOrders } = userSlice.actions;

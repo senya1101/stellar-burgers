@@ -8,18 +8,23 @@ import {
   orderAsync
 } from '../../services/slices/constructorSlice';
 import { useDispatch, useSelector } from '../../services/store';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { getUser } from '../../services/slices/userSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const constructorItems = useSelector(getConstructorItems);
-
+  const user = useSelector(getUser);
   const orderRequest = useSelector(getOrderRequest);
-
-  const orderModalData = useSelector(getOrderModalData);
   const navigate = useNavigate();
 
+  const orderModalData = useSelector(getOrderModalData);
+
   const onOrderClick = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     if (!constructorItems.bun || orderRequest) return;
     const order = constructorItems.ingredients.map((x) => x._id);
     order.push(constructorItems.bun._id);

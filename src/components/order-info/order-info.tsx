@@ -5,7 +5,8 @@ import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   getIngredients,
-  getIngredientsAsync
+  getIngredientsAsync,
+  getIngredientsIsLoading
 } from '../../services/slices/constructorSlice';
 import { useParams } from 'react-router-dom';
 import {
@@ -16,11 +17,14 @@ import {
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const ingredients = useSelector(getIngredients);
+  const ingredientsIsLoading = useSelector(getIngredientsIsLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!ingredients) dispatch(getIngredientsAsync());
-    dispatch(getOrderByIdAsync(Number(number)));
+    Promise.all([
+      dispatch(getIngredientsAsync()),
+      dispatch(getOrderByIdAsync(Number(number)))
+    ]);
   }, []);
   const orderData = useSelector(getCurrentOrderModal);
 
@@ -66,7 +70,7 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (!orderInfo) {
+  if (!orderInfo || ingredientsIsLoading) {
     return <Preloader />;
   }
 

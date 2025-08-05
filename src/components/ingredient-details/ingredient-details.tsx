@@ -14,7 +14,7 @@ export const IngredientDetails: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!ingredients) dispatch(getIngredientsAsync());
+    dispatch(getIngredientsAsync());
   }, []);
   const ingredientData = ingredients.find((x) => x._id === id);
   if (!ingredientData) {

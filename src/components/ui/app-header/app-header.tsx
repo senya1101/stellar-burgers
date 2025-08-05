@@ -23,7 +23,9 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
         </Link>
       </div>
       <div className={styles.logo}>
-        <Logo className='' />
+        <Link to={'/'}>
+          <Logo className='' />
+        </Link>
       </div>
       <div className={styles.link_position_last}>
         <Link to={'/profile'} className={styles.link}>

@@ -31,21 +31,22 @@ const App = () => {
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path={'/feed'} element={<Feed />} />
-        <Route path={'/login'} element={<ProtectedRoute />}>
+        <Route path={'/login'} element={<ProtectedRoute auth />}>
           <Route index element={<Login />} />
         </Route>
-        <Route path={'/register'} element={<ProtectedRoute />}>
+        <Route path={'/register'} element={<ProtectedRoute auth />}>
           <Route index element={<Register />} />
         </Route>
-        <Route path={'/reset-password'} element={<ProtectedRoute />}>
+        <Route path={'/reset-password'} element={<ProtectedRoute auth />}>
           <Route index element={<ResetPassword />} />
         </Route>
-        <Route path={'/forgot-password'} element={<ProtectedRoute />}>
+        <Route path={'/forgot-password'} element={<ProtectedRoute auth />}>
           <Route index element={<ForgotPassword />} />
         </Route>
         <Route path={'/profile'} element={<ProtectedRoute />}>
           <Route index element={<Profile />} />
           <Route path={'orders'} element={<ProfileOrders />} />
+          <Route path={':number'} element={<OrderInfo />} />
         </Route>
         <Route path={'/ingredients/:id'} element={<IngredientDetails />} />
         <Route path={'*'} element={<NotFound404 />} />
@@ -56,13 +57,13 @@ const App = () => {
             path={'/ingredients/:id'}
             element={
               <Modal
-                title={''}
+                title={'Детали ингредиента'}
                 onClose={handleModalClose}
                 children={<IngredientDetails />}
               />
             }
           />
-          <Route path={'/profile/order/:number'} element={<ProtectedRoute />}>
+          <Route path={'/profile/orders/:number'} element={<ProtectedRoute />}>
             <Route
               index
               element={

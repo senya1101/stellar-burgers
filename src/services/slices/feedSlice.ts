@@ -54,10 +54,7 @@ export const feedSlice = createSlice({
       })
 });
 
-export const getFeedAsync = createAsyncThunk(
-  'feed/orders',
-  async () => await getFeedsApi()
-);
+export const getFeedAsync = createAsyncThunk('feed/orders', getFeedsApi);
 
 export const getOrderByIdAsync = createAsyncThunk(
   'orderById',

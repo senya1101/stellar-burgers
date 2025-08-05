@@ -1,12 +1,17 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { LoginUI } from '@ui-pages';
-import { useDispatch } from '../../services/store';
-import { loginUser, registerUser } from '../../services/slices/userSlice';
+import { useDispatch, useSelector } from '../../services/store';
+import {
+  getErrorUser,
+  loginUser,
+  setErrorUser
+} from '../../services/slices/userSlice';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const error = useSelector(getErrorUser);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -20,7 +25,7 @@ export const Login: FC = () => {
 
   return (
     <LoginUI
-      errorText=''
+      errorText={error}
       email={email}
       setEmail={setEmail}
       password={password}
