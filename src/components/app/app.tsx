@@ -56,9 +56,25 @@ const App = () => {
         <Route path={'/profile'} element={<ProtectedRoute />}>
           <Route index element={<Profile />} />
           <Route path={'orders'} element={<ProfileOrders />} />
-          <Route path={'orders/:number'} element={<OrderInfo />} />
+          <Route
+            path={'orders/:number'}
+            element={
+              <TitleWrapper
+                title={`#${location.pathname.split('/').pop()}`}
+                children={<OrderInfo />}
+              />
+            }
+          />
         </Route>
-        <Route path={'/ingredients/:id'} element={<IngredientDetails />} />
+        <Route
+          path={'/ingredients/:id'}
+          element={
+            <TitleWrapper
+              title={'Детали ингредиента'}
+              children={<IngredientDetails />}
+            />
+          }
+        />
         <Route path={'*'} element={<NotFound404 />} />
       </Routes>
       {background && (

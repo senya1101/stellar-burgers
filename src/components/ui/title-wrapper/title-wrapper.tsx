@@ -9,7 +9,11 @@ export const TitleWrapper = ({
   children: ReactElement;
 }) => (
   <div className={styles.wrapper}>
-    <h3 className={`text text_type_digits-default ${styles.title}`}>{title}</h3>
+    <h3
+      className={`text ${title.includes('#') ? 'text_type_digits-default' : 'text_type_main-large'} ${styles.title}`}
+    >
+      {title}
+    </h3>
     {children}
   </div>
 );
