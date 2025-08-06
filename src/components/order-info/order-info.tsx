@@ -51,7 +51,6 @@ export const OrderInfo: FC = () => {
         } else {
           acc[item].count++;
         }
-
         return acc;
       },
       {}

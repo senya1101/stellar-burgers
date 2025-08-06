@@ -14,7 +14,8 @@ import styles from './app.module.css';
 
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { ProtectedRoute } from '../protected-route/ProtectedRoute';
+import { ProtectedRoute } from '../protected-route';
+import { TitleWrapper } from '../ui/title-wrapper';
 
 const App = () => {
   const location = useLocation();
@@ -31,6 +32,15 @@ const App = () => {
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path={'/feed'} element={<Feed />} />
+        <Route
+          path={'/feed/:number'}
+          element={
+            <TitleWrapper
+              title={`#${location.pathname.split('/').pop()}`}
+              children={<OrderInfo />}
+            />
+          }
+        />
         <Route path={'/login'} element={<ProtectedRoute auth />}>
           <Route index element={<Login />} />
         </Route>
@@ -46,7 +56,7 @@ const App = () => {
         <Route path={'/profile'} element={<ProtectedRoute />}>
           <Route index element={<Profile />} />
           <Route path={'orders'} element={<ProfileOrders />} />
-          <Route path={':number'} element={<OrderInfo />} />
+          <Route path={'orders/:number'} element={<OrderInfo />} />
         </Route>
         <Route path={'/ingredients/:id'} element={<IngredientDetails />} />
         <Route path={'*'} element={<NotFound404 />} />
@@ -68,7 +78,7 @@ const App = () => {
               index
               element={
                 <Modal
-                  title={''}
+                  title={`#${location.pathname.split('/').pop()}`}
                   onClose={handleModalClose}
                   children={<OrderInfo />}
                 />
@@ -79,7 +89,7 @@ const App = () => {
             path={'/feed/:number'}
             element={
               <Modal
-                title={''}
+                title={`#${location.pathname.split('/').pop()}`}
                 onClose={handleModalClose}
                 children={<OrderInfo />}
               />

@@ -8,7 +8,7 @@ import {
   orderAsync
 } from '../../services/slices/constructorSlice';
 import { useDispatch, useSelector } from '../../services/store';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../services/slices/userSlice';
 
 export const BurgerConstructor: FC = () => {
@@ -26,8 +26,11 @@ export const BurgerConstructor: FC = () => {
       return;
     }
     if (!constructorItems.bun || orderRequest) return;
-    const order = constructorItems.ingredients.map((x) => x._id);
-    order.push(constructorItems.bun._id);
+    const order = [
+      constructorItems.bun._id,
+      ...constructorItems.ingredients.map((x) => x._id),
+      constructorItems.bun._id
+    ];
     dispatch(orderAsync(order));
   };
   const closeOrderModal = () => {
