@@ -16,11 +16,23 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route';
 import { TitleWrapper } from '../ui/title-wrapper';
+import { useEffect } from 'react';
+import { getCookie } from '../../utils/cookie';
+import { useDispatch } from '../../services/store';
+import { getUserAsync } from '../../services/slices/userSlice';
 
 const App = () => {
   const location = useLocation();
   const background = location.state?.background;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      dispatch(getUserAsync());
+    }
+  }, []);
 
   function handleModalClose() {
     navigate(-1);

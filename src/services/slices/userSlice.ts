@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder, TUser } from '@utils-types';
 import {
   getOrdersApi,
+  getUserApi,
   loginUserApi,
   logoutApi,
   registerUserApi,
@@ -115,6 +116,16 @@ export const userSlice = createSlice({
       .addCase(getUsersOrdersAsync.fulfilled, (state, { payload }) => {
         state.orders = payload;
         state.ordersIsLoading = false;
+      })
+      .addCase(getUserAsync.pending, (state) => {
+        state.ordersIsLoading = true;
+      })
+      .addCase(getUserAsync.rejected, (state) => {
+        state.ordersIsLoading = false;
+      })
+      .addCase(getUserAsync.fulfilled, (state, { payload }) => {
+        state.user = payload.user;
+        state.ordersIsLoading = false;
       });
   }
 });
@@ -142,6 +153,8 @@ export const getUsersOrdersAsync = createAsyncThunk(
   'user/orders',
   getOrdersApi
 );
+
+export const getUserAsync = createAsyncThunk('user/get', getUserApi);
 
 export const {
   getUsersOrders,
