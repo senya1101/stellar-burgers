@@ -8,7 +8,7 @@ import {
   getIngredientsBun,
   getIngredientsMain,
   getIngredientsSauce
-} from '../../services/slices/constructorSlice';
+} from '../../services/slices/constructorSlice/constructorSlice';
 import { useSelector } from '../../services/store';
 
 export const BurgerIngredients: FC = () => {

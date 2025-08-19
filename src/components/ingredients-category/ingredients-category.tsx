@@ -2,7 +2,7 @@ import { forwardRef, useMemo } from 'react';
 import { TIngredientsCategoryProps } from './type';
 import { TIngredient } from '@utils-types';
 import { IngredientsCategoryUI } from '@ui';
-import { getConstructorItems } from '../../services/slices/constructorSlice';
+import { getConstructorItems } from '../../services/slices/constructorSlice/constructorSlice';
 import { useSelector } from '../../services/store';
 
 export const IngredientsCategory = forwardRef<

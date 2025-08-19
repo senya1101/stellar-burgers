@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from '../../services/store';
-import { getUser, getUserIsLoading } from '../../services/slices/userSlice';
+import { getUser, getUserIsLoading } from '../../services/slices/userSlice/userSlice';
 import { Preloader } from '@ui';
 
 export const ProtectedRoute = ({ auth }: { auth?: boolean }) => {

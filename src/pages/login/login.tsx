@@ -5,7 +5,7 @@ import {
   getErrorUser,
   loginUser,
   setErrorUser
-} from '../../services/slices/userSlice';
+} from '../../services/slices/userSlice/userSlice';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');

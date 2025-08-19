@@ -7,12 +7,12 @@ import {
   getIngredients,
   getIngredientsAsync,
   getIngredientsIsLoading
-} from '../../services/slices/constructorSlice';
+} from '../../services/slices/constructorSlice/constructorSlice';
 import { useParams } from 'react-router-dom';
 import {
   getCurrentOrderModal,
   getOrderByIdAsync
-} from '../../services/slices/feedSlice';
+} from '../../services/slices/feedSlice/feedSlice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();

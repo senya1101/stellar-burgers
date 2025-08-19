@@ -6,9 +6,9 @@ import {
   getOrdersIsLoading,
   getUsersOrders,
   getUsersOrdersAsync
-} from '../../services/slices/userSlice';
+} from '../../services/slices/userSlice/userSlice';
 import { Preloader } from '@ui';
-import { getIngredientsAsync } from '../../services/slices/constructorSlice';
+import { getIngredientsAsync } from '../../services/slices/constructorSlice/constructorSlice';
 
 export const ProfileOrders: FC = () => {
   const dispatch = useDispatch();

@@ -1,5 +1,5 @@
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getIngredientsApi, orderBurgerApi } from '@api';
@@ -20,7 +20,7 @@ export interface ConstructorState {
   modalOrderData: TOrder | null;
 }
 
-const initialState: ConstructorState = {
+export const initialState: ConstructorState = {
   ingredients: [],
   modalOrderData: null,
   orderRequest: false,
@@ -46,11 +46,16 @@ export const constructorSlice = createSlice({
         }
       },
       prepare: (ingredient: TIngredient) => ({
-        payload: { ...ingredient, id: uuidv4() }
+        payload: { ...ingredient, id: uuid() }
       })
     },
     handleMoveDownItem: (state, { payload }) => {
-      state.constructorItems.ingredients.forEach((x, ind) => {
+      for (
+        let ind = 0;
+        ind < state.constructorItems.ingredients.length;
+        ind++
+      ) {
+        const x = state.constructorItems.ingredients[ind];
         if (
           x._id === payload._id &&
           ind + 1 < state.constructorItems.ingredients.length
@@ -62,8 +67,9 @@ export const constructorSlice = createSlice({
             state.constructorItems.ingredients[ind + 1],
             state.constructorItems.ingredients[ind]
           ];
+          break;
         }
-      });
+      }
     },
     handleMoveUpItem: (state, { payload }) => {
       state.constructorItems.ingredients.forEach((x, ind) => {
@@ -133,6 +139,8 @@ export const orderAsync = createAsyncThunk('order', async (data: string[]) => {
   const res = await orderBurgerApi(data);
   return res.order;
 });
+
+export const constructorReducer = constructorSlice.reducer;
 
 export const {
   getIngredientsIsLoading,

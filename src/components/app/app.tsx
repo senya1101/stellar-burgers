@@ -19,7 +19,7 @@ import { TitleWrapper } from '../ui/title-wrapper';
 import { useEffect } from 'react';
 import { getCookie } from '../../utils/cookie';
 import { useDispatch } from '../../services/store';
-import { getUserAsync } from '../../services/slices/userSlice';
+import { getUserAsync } from '../../services/slices/userSlice/userSlice';
 
 const App = () => {
   const location = useLocation();
