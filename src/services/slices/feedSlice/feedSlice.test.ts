@@ -2,7 +2,7 @@ import { afterAll } from '@jest/globals';
 import {
   feedSliceReducer,
   FeedState,
-  getFeedAsync,
+  getFeedAsync, getFeedIsLoading,
   getFeedOrders,
   getFeedTotal,
   getFeedTotalToday, getOrderByIdAsync,
@@ -61,6 +61,10 @@ describe('FeedSlice', () => {
   test('Feed total today selector', () => {
     const res = getFeedTotalToday({ feed: mockState });
     expect(res).toEqual(mockState.totalToday);
+  });
+  test('Feed is loading selector', () => {
+    const res = getFeedIsLoading({ feed: mockState });
+    expect(res).toEqual(mockState.feedIsLoading);
   });
   test('Get feed async', async () => {
     const expectedRes = {
