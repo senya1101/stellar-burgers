@@ -51,7 +51,7 @@ export const feedSlice = createSlice({
         state.orderModalIsLoading = false;
       })
       .addCase(getOrderByIdAsync.fulfilled, (state, { payload }) => {
-        state.feedIsLoading = false;
+        state.orderModalIsLoading = false;
         state.currentOrderModal = payload.orders[0];
       })
 });
