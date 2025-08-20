@@ -64,6 +64,7 @@ export const userSlice = createSlice({
       })
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
+        state.error = '';
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;

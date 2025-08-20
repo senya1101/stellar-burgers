@@ -1,6 +1,7 @@
 import {
+  getErrorUser, getOrdersIsLoading,
   getUser,
-  getUserAsync,
+  getUserAsync, getUserIsLoading, getUsersOrders,
   getUsersOrdersAsync,
   initialState,
   loginUser,
@@ -49,7 +50,7 @@ const mockState: UserState = {
       number: 86836
     }
   ],
-  error: '',
+  error: 'error',
   ordersIsLoading: false
 };
 
@@ -67,6 +68,22 @@ describe('userSlice', () => {
   test('User selector', () => {
     const res = getUser({ user: mockState });
     expect(res).toEqual(mockState.user);
+  });
+  test('Users orders selector', () => {
+    const res = getUsersOrders({ user: mockState });
+    expect(res).toEqual(mockState.orders);
+  });
+  test('Users orders selector', () => {
+    const res = getOrdersIsLoading({ user: mockState });
+    expect(res).toBe(mockState.ordersIsLoading);
+  });
+  test('User is loading selector', () => {
+    const res = getUserIsLoading({ user: mockState });
+    expect(res).toEqual(mockState.isLoading);
+  });
+  test('Users error selector', () => {
+    const res = getErrorUser({ user: mockState });
+    expect(res).toEqual(mockState.error);
   });
   test('Get user async', async () => {
     global.fetch = jest.fn(() =>
