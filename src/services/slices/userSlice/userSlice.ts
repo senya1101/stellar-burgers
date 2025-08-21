@@ -9,7 +9,7 @@ import {
   TRegisterData,
   updateUserApi
 } from '@api';
-import { deleteCookie, setCookie } from '../../utils/cookie';
+import { deleteCookie, setCookie } from '../../../utils/cookie';
 
 export interface UserState {
   user: TUser | null;
@@ -19,7 +19,7 @@ export interface UserState {
   ordersIsLoading: boolean;
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   user: null,
   isLoading: false,
   orders: [],
@@ -31,11 +31,9 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    resetUser: () => initialState,
     setErrorUser: (state, action) => {
       if (typeof action.payload === 'string') state.error = action.payload;
-    },
-    clearUserOrders: (state) => {
-      state.orders = [];
     }
   },
   selectors: {
@@ -66,6 +64,7 @@ export const userSlice = createSlice({
       })
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
+        state.error = '';
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -118,14 +117,14 @@ export const userSlice = createSlice({
         state.ordersIsLoading = false;
       })
       .addCase(getUserAsync.pending, (state) => {
-        state.ordersIsLoading = true;
+        state.isLoading = true;
       })
       .addCase(getUserAsync.rejected, (state) => {
-        state.ordersIsLoading = false;
+        state.isLoading = false;
       })
       .addCase(getUserAsync.fulfilled, (state, { payload }) => {
         state.user = payload.user;
-        state.ordersIsLoading = false;
+        state.isLoading = false;
       });
   }
 });
@@ -164,4 +163,6 @@ export const {
   getOrdersIsLoading
 } = userSlice.selectors;
 
-export const { setErrorUser, clearUserOrders } = userSlice.actions;
+export const { setErrorUser, resetUser } = userSlice.actions;
+
+export const userSliceReducer = userSlice.reducer;

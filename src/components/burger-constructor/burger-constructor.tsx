@@ -2,14 +2,15 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import {
+  closeOrder,
   getConstructorItems,
   getOrderModalData,
   getOrderRequest,
   orderAsync
-} from '../../services/slices/constructorSlice';
+} from '../../services/slices/constructorSlice/constructorSlice';
 import { useDispatch, useSelector } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../../services/slices/userSlice';
+import { getUser } from '../../services/slices/userSlice/userSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export const BurgerConstructor: FC = () => {
     dispatch(orderAsync(order));
   };
   const closeOrderModal = () => {
-    navigate(-1);
+    dispatch(closeOrder());
   };
 
   const price = useMemo(

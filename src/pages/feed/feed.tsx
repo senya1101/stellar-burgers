@@ -7,11 +7,11 @@ import {
   getFeedAsync,
   getFeedIsLoading,
   getFeedOrders
-} from '../../services/slices/feedSlice';
+} from '../../services/slices/feedSlice/feedSlice';
 import {
   getIngredientsAsync,
   getIngredientsIsLoading
-} from '../../services/slices/constructorSlice';
+} from '../../services/slices/constructorSlice/constructorSlice';
 
 export const Feed: FC = () => {
   const orders: TOrder[] = useSelector(getFeedOrders);

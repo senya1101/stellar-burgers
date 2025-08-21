@@ -1,4 +1,7 @@
 {
+  "globals": {
+    "cy": true
+  },
   "parser": "@typescript-eslint/parser",
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "extends": ["prettier"],
