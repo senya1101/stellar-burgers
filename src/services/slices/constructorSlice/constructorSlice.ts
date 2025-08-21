@@ -37,6 +37,10 @@ export const constructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
   reducers: {
+    closeOrder: (state) => {
+      state.orderRequest = false;
+      state.modalOrderData = null;
+    },
     addIngredient: {
       reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
         if (action.payload.type === 'bun') {
@@ -157,5 +161,6 @@ export const {
   addIngredient,
   handleMoveDownItem,
   handleMoveUpItem,
-  handleCloseItem
+  handleCloseItem,
+  closeOrder
 } = constructorSlice.actions;

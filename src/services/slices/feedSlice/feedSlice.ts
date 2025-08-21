@@ -6,7 +6,7 @@ export interface FeedState extends TOrdersData {
   feedIsLoading: boolean;
   currentOrderModal: TOrder | null;
   orderModalIsLoading: boolean;
-};
+}
 
 export const initialState: FeedState = {
   total: 0,

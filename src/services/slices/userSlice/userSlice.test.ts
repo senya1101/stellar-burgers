@@ -1,7 +1,10 @@
 import {
-  getErrorUser, getOrdersIsLoading,
+  getErrorUser,
+  getOrdersIsLoading,
   getUser,
-  getUserAsync, getUserIsLoading, getUsersOrders,
+  getUserAsync,
+  getUserIsLoading,
+  getUsersOrders,
   getUsersOrdersAsync,
   initialState,
   loginUser,

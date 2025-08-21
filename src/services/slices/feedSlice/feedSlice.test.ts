@@ -2,10 +2,12 @@ import { afterAll } from '@jest/globals';
 import {
   feedSliceReducer,
   FeedState,
-  getFeedAsync, getFeedIsLoading,
+  getFeedAsync,
+  getFeedIsLoading,
   getFeedOrders,
   getFeedTotal,
-  getFeedTotalToday, getOrderByIdAsync,
+  getFeedTotalToday,
+  getOrderByIdAsync,
   initialState
 } from './feedSlice';
 import store from '../../store';
