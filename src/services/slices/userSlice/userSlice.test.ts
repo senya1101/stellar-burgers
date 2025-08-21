@@ -203,7 +203,7 @@ describe('userSlice', () => {
   });
 });
 
-describe('Logout/update user', () => {
+describe('userSlice - Logout/update user', () => {
   beforeEach(async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
